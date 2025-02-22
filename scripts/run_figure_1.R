@@ -13,7 +13,7 @@ source("scripts/functions/grad_function.R")
 source("scripts/functions/simulation_functions.R")
 
 #*******reproduction of figure 1***********#
-n_simulations <- 5
+n_simulations <- 100
 n_observations <- 100
 counts_list <- c(20, 40, 80, 160)
 

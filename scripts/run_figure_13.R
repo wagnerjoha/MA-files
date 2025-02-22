@@ -20,9 +20,10 @@ data_kl15_agem <- rename(data_kl15_agem, age = best)
 results <- read_data_kl15_xrf(data_kl15_xrf, data_kl15_agem)
 data_kl15 <- results$data_kl15
 
-data_sel <- round(data_kl15[4:ncol(data_kl15)-1] * 0.01)
+data_sel <- data_kl15[4:ncol(data_kl15)-1]
 colnames(data_sel) <- gsub("_cts", "", colnames(data_sel))
-data_repl <- cmultRepl(data_sel, method = "CZM", suppress.print=TRUE)
+data_sel_rsc <- round(data_sel * 0.01)
+data_repl <- cmultRepl(data_sel_rsc, method = "CZM", suppress.print=TRUE)
 x_clr <- clr(data_repl)
 
 pca_classic <- prcomp(x_clr)
@@ -50,20 +51,20 @@ plot1 <- ggplot(loading_df, aes(x = Variable, y = Loading)) +
   coord_flip() +
   labs(title = "PC1 loading intervals for the standard estimation")
 
-mcem_result <- co_pca_mcem_bfgs(data_sel,
+mcem_result <- co_pca_mcem_bfgs(data_sel_rsc,
                        max_iter = 50,
                        r = 10,
                        lambda = 1,
-                       eps = 0.15)
+                       eps = 0.25)
 
 reference_pca <- mcem_result$pca
 
 btst_results <- bbootstrap_pca_ts_par(data_sel,
                         block_length = 50,
-                        replicates = 100,
+                        replicates = 10,
                         reference_pca = reference_pca,
                         scale = 0.01,
-                        eps = 0.15,
+                        eps = 0.25,
                         workers = 10)
 
 loading_ci <- apply(simplify2array(lapply(btst_results, function(x) 

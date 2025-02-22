@@ -24,7 +24,7 @@ data_kl15_agem <- rename(data_kl15_agem, age = best)
 results <- read_data_kl15_xrf(data_kl15_xrf, data_kl15_agem)
 data <- results$data_kl15
 
-n_simulations <- 5
+n_simulations <- 100
 n_observations <- 100
 scales <- c(1, 0.1, 0.01)
 

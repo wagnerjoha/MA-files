@@ -19,10 +19,10 @@ block_bootstrap_pca <- function(data, block_length = 50, R = 1000, reference_pca
     
     # Align signs with reference PCA
     for(j in 1:ncol(boot_pca$rotation)) {
-      cor_sign <- sign(sum(boot_pca$rotation[,j] * reference_pca$rotation[,j] ))
+      max_idx <- which.max(abs(boot_pca$rotation[, j]))
+      cor_sign <- sign(boot_pca$rotation[max_idx, j] * reference_pca$rotation[max_idx, j])
       if(cor_sign < 0) {
-        boot_pca$rotation[,j] <- -boot_pca$rotation[,j]
-        boot_pca$x[,j] <- -boot_pca$x[,j]
+        boot_pca$rotation[, j] <- -boot_pca$rotation[, j]
       }
     }
     
@@ -66,13 +66,14 @@ bbootstrap_pca_ts_par <- function(data,
       boot_data <- data[boot_indices, ]
       boot_results <- co_pca_mcem_bfgs(boot_data,
                                       max_iter = 50,
-                                      r = 10,
+                                      r = 1000,
                                       lambda = 1,
                                       eps = eps)
       boot_pca <- boot_results$pca
       
       for(j in seq_len(ncol(boot_pca$rotation))) {
-          cor_sign <- sign(sum(boot_pca$rotation[, j] * reference_pca$rotation[, j]))
+          max_idx <- which.max(abs(boot_pca$rotation[, j]))
+          cor_sign <- sign(boot_pca$rotation[max_idx, j] * reference_pca$rotation[max_idx, j])
           if (cor_sign < 0) {
               boot_pca$rotation[, j] <- -boot_pca$rotation[, j]
           }
