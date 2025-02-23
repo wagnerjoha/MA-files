@@ -3,6 +3,8 @@
 This repository contains two types of scripts to reproduce figures. They have been tested on R version 4.4.2.
 on a x86_64-pc-linux-gnu machine.
 
+The project can be found on GitHub at: https://github.com/wagnerjoha/MA-files
+
 ## 1. run_*-scripts
 Direct execution scripts that include all calculations. The user should be aware that this might take time
 depending on the simulation setting.
